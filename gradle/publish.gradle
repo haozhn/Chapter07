@@ -1,0 +1,48 @@
+apply plugin: 'maven-publish'
+
+def javadocJar = task("javadocJar", type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+def sourcesJar = task("sourcesJar", type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.java.srcDirs
+}
+
+afterEvaluate {
+
+    publishing {
+        // 配置maven 仓库
+        repositories { RepositoryHandler handler ->
+            handler.mavenLocal()
+            handler.maven {
+                url "/Users/hao/maven-local"
+            }
+        }
+        publications { PublicationContainer publicationContainer ->
+//            debug(MavenPublication) {
+//                from components.debug
+//                artifact sourceJar // 上传源码
+//                groupId = GROUP_ID
+//                artifactId = ARTIFACT_ID
+//                version = "${VERSION}_DEBUG"
+//            }
+//            release(MavenPublication) {
+//                from components.release
+//                artifact sourceJar // 上传源码
+//                groupId = GROUP_ID
+//                artifactId = ARTIFACT_ID
+//                version = VERSION
+//            }
+            Component(MavenPublication) {
+                from components.java
+                groupId = POM_GROUP_ID
+                artifactId = POM_ARTIFACT_ID
+                version = POM_VERSION
+
+                artifact sourcesJar
+                artifact javadocJar
+            }
+        }
+    }
+}

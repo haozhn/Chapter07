@@ -30,7 +30,7 @@ dependencies {
     compile 'com.android.tools.lint:lint-checks:26.0.1'
 }
 
-version 1.0
-group "com.geektime.systrace"
+//version 1.0
+//group "com.geektime.systrace"
 
-apply from: rootProject.file('gradle/java-publish.gradle')
+apply from: rootProject.file('gradle/publish.gradle')
